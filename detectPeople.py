@@ -8,6 +8,8 @@ hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 cap = cv2.VideoCapture('TestVids/1Straight.MP4')
 
+
+
 # Get the video's width and height
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -24,8 +26,8 @@ new_height = int(height * scale_factor)
 fps = int(cap.get(cv2.CAP_PROP_FPS))
 
 # define out
-#fourcc = cv2.VideoWriter_fourcc(*'XVID')
-#out = cv2.VideoWriter('output.avi', fourcc, fps, (new_width, new_height))
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('straightResult.avi', fourcc, fps, (new_width, new_height))
 
 while cap.isOpened():
     # Reading the video stream
@@ -73,7 +75,7 @@ while cap.isOpened():
         cv2.imshow("Image", image)
 
         # write the video to a file
-        #out.write(image)
+        out.write(image)
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
