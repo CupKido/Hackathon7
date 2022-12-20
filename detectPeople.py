@@ -6,7 +6,7 @@ import cv2
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-cap = cv2.VideoCapture('TestVids/2Zigzag.MP4')
+cap = cv2.VideoCapture('TestVids/1Straight.MP4')
 
 # Get the video's width and height
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -24,8 +24,8 @@ new_height = int(height * scale_factor)
 fps = int(cap.get(cv2.CAP_PROP_FPS))
 
 # define out
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('output.avi', fourcc, fps, (new_width, new_height))
+#fourcc = cv2.VideoWriter_fourcc(*'XVID')
+#out = cv2.VideoWriter('output.avi', fourcc, fps, (new_width, new_height))
 
 while cap.isOpened():
     # Reading the video stream
@@ -61,14 +61,19 @@ while cap.isOpened():
 
             # Print the distance and angle to the object in the image
 
+            object_x = distance * math.cos(angle)
+            object_y = distance * math.sin(angle)
+
             cv2.putText(image, "Distance: " + str(distance), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             cv2.putText(image, "Angle: " + str(angle), (x, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+            cv2.putText(image, "x, y: " + str(object_x) + ", " + str(object_y), (x, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+
 
         # Showing the output Image
         cv2.imshow("Image", image)
 
         # write the video to a file
-        out.write(image)
+        #out.write(image)
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
