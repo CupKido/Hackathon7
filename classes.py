@@ -1,3 +1,4 @@
+import math
 from FOV_calc import *
 
 FORMATS = {1 : '35mm & FX', 2 : 'DX', 3 : 'CX Nikon 1'}
@@ -61,3 +62,13 @@ Lens Focal LengthL: {self.lens_focal_length} mm\n\
 Format: {FORMATS[self.format]}\n\
 Max Clear View Distance: {self.max_clear_view_distance} m\n\
 Horizontal FOV: {self.horizontal_fov}°'
+
+
+    def get_person_blueprint_location(self, distance : float, angle : float, pixels_per_meter : int) -> tuple:
+        object_x = distance * math.cos(angle)
+        object_y = distance * math.sin(angle)
+
+        xLocation = self.location[0] - (object_y * pixels_per_meter)
+        yLocation = self.location[1] + (object_x * pixels_per_meter)
+
+        return xLocation, yLocation

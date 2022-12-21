@@ -101,13 +101,13 @@ def process_frame(image, cap):
 
             # Print the distance and angle to the object in the image and change degrees to radians
         angle = math.radians(angle - (BASE_CAMERA_ANGLE - camera_angle))
-        object_x = distance * math.cos(angle)
-        object_y = distance * math.sin(angle)
-
-            # find the pixel location of the object
-
-        xLocation = camera_location[0] - (object_y * PIXELS_PER_METER)
-        yLocation = camera_location[1] + (object_x * PIXELS_PER_METER)
+        object_x = distance * math.cos(angle) # ------------------------------------+
+        object_y = distance * math.sin(angle) #                                     |
+        #                                                                           |
+            # find the pixel location of the object                                 |------> Camera.get_person_blueprint_location(distance, angle, Map.pixels_per_meter)
+        #                                                                           |
+        xLocation = camera_location[0] - (object_y * PIXELS_PER_METER) #            |
+        yLocation = camera_location[1] + (object_x * PIXELS_PER_METER) # -----------+
 
             # choose color by checking other circles in the area
 
