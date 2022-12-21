@@ -7,15 +7,17 @@ cameras = {}
 files = {}
 circles = []
 ids = {}
+last_file_ids = {}
 camera_base_angle = 145
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 REMOVED = [set()]
-NORMAL_BOX_HEIGHT = 195
+NORMAL_BOX_HEIGHT = 178
 SCALE_FACTOR = 0.25
 BASE_CAMERA_ANGLE = 145 + 15
 PIXELS_PER_METER = 32.5
 BALL_SIZE = 3
+WAIT_TIME = 0.15
 blueprint = cv2.imread('Blueprints/Test_cases/png/blueprintsT1.png')
 blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
 copy_blueprint = blueprint.copy()
@@ -36,6 +38,7 @@ def add_text_data(path, capture_path, location, angle, fov, focal_length):
 def process_files():
     for path in files:
         process_file(path)
+    print(str(ids))
 
 def process_file(path): 
     file = open(path, 'r')
@@ -44,7 +47,7 @@ def process_file(path):
         process_line(line, path)
         i += 1
         if i > 12:
-            time.sleep(0.2)
+            time.sleep(WAIT_TIME)
             i = 0
 
 def process_line(data, path):
@@ -56,6 +59,8 @@ def process_line(data, path):
     width = int(files[path]["frame"][0])
     height = int(files[path]["frame"][1])
     line = data.split(' ')
+    if len(line) < 6:
+        return
     box_height = float(line[5])
     box_width = float(line[4])
     y = float(line[3])
@@ -76,6 +81,16 @@ def process_line(data, path):
     xLocation = camera_location[0] - (object_y * PIXELS_PER_METER)
     yLocation = camera_location[1] + (object_x * PIXELS_PER_METER)
     temp_id = int(line[1])
+    
+    if temp_id == 1 or temp_id == 9:
+        temp_id = 9
+    if temp_id == 3 or temp_id == 8 or temp_id == 7:
+        temp_id = 8
+    if temp_id == 2 or temp_id == 10:
+        temp_id = 10
+    # 3 and 8 and 7 - ben
+    # 1 and 9 - itamar
+    # 2 and 10 - saar
     if temp_id in ids.keys():
         color = ids[temp_id]
     else:
@@ -87,7 +102,7 @@ def process_line(data, path):
             color = (b, g, r)
         ids[temp_id] = color
 
-    
+    print(str(temp_id) + " " + str(color) + " " + str(int(xLocation)) + " " + str(int(yLocation)))
     cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)  
     cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
 
