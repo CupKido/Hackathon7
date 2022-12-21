@@ -21,4 +21,4 @@ cv.imshow('Detected Faces', img)
 
 
 
-cv.waitKey(0)s
+cv.waitKey(0)
