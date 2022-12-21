@@ -1,7 +1,6 @@
 import math
 import cv2
 
-import chooseColor
 import random
 import manageCamera
 ############################  CONSTS  ###########################
@@ -33,7 +32,7 @@ hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 #cap = cv2.VideoCapture('Videos/TestVids/Cam2Test2.MP4')
 
 # open the image file blueprint.png
-blueprint = cv2.imread('Blueprints/Test_cases/blueprint.png')
+#blueprint = cv2.imread('Blueprints/Test_cases/blueprint.png')
 
 # Get the video's width and height
 
@@ -49,16 +48,17 @@ fourcc = cv2.VideoWriter_fourcc(*'XVID')
 
 # resize the blueprint image
 
-blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
-copy_blueprint = blueprint.copy()
+#blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
+#copy_blueprint = blueprint.copy()
 
 # draw a circle on camera location
 
-cv2.circle(copy_blueprint, CAMERA_LOCATION, 10, (0, 255, 0), -1)
+#cv2.circle(copy_blueprint, CAMERA_LOCATION, 10, (0, 255, 0), -1)
 
 manageCamera.sync_params(NORMAL_BOX_HEIGHT, SCALE_FACTOR)
-manageCamera.add_camera('Videos/TestVids/Cam2Test2.MP4', (107, 144), 108, 73.7, 24)
-manageCamera.add_camera('Videos/TestVids/Cam1Test2.MP4', (211, 548), 325, 70.7, 27)
+#manageCamera.add_camera('Videos/TestVids/1Zigzag.MP4', (107, 144), 145, 73.7, 24)
+#manageCamera.add_camera('Videos/TestVids/Cam2Test1.MP4', (107, 144), 108, 73.7, 24)
+manageCamera.add_camera('Videos/TestVids/Cam1Test1.MP4', (211, 548), 325, 70.7, 27)
 manageCamera.process_cameras()
 
 cv2.destroyAllWindows()

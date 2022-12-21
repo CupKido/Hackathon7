@@ -8,12 +8,6 @@ import cv2
 radius = 20
 
 # open the blueprint image
-blueprint = cv2.imread('Blueprints/Test_cases/blueprint.png')
-
-# resize the blueprint image
-
-blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
-copy_blueprint = blueprint.copy()
 
 
 # draw a circle on located object
