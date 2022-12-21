@@ -9,11 +9,11 @@ SCALE_FACTOR = 0.25
 FOCAL_LENGTH = 24
 NORMAL_BOX_HEIGHT = 80
 NORMAL_BOX_WIDTH = 1
-CAMERA_LOCATION = (138, 149)
+CAMERA_LOCATION = (209, 146)
 PIXELS_PER_METER = 32.5
 FIELD_OF_VIEW = 73.7
 BASE_CAMERA_ANGLE = 145
-CAMERA_ANGLE = 110
+CAMERA_ANGLE = 145
 #################################################################
 
 #######################  Global variables  ######################
@@ -29,10 +29,10 @@ hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 #######################  Video parameters  #######################
 
 # Reading the Video from the
-cap = cv2.VideoCapture('Videos/TestVids/2Zigzag.MP4')
+cap = cv2.VideoCapture('TestVids\\1Zigzag.MP4')
 
 # open the image file blueprint.png
-blueprint = cv2.imread('Blueprints/Test_cases/blueprint.png')
+blueprint = cv2.imread('Blueprints\\Test_cases\\png\\blueprintx T1.png')
 
 # Get the video's width and height
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -45,7 +45,7 @@ fps = int(cap.get(cv2.CAP_PROP_FPS))
 
 # define out
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('straightResult.avi', fourcc, fps, (new_width, new_height))
+# out = cv2.VideoWriter('straightResult.avi', fourcc, fps, (new_width, new_height))
 
 #################################################################
 
@@ -126,10 +126,10 @@ while cap.isOpened():
         cv2.imshow("Image", image)
 
         # write the video to a file
-        out.write(image)
+        # out.write(image)
 
         # save the blueprint image
-        cv2.imwrite('Blueprints/Results/blueprintLocations.png', copy_blueprint)
+        cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break

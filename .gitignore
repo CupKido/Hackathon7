@@ -2,5 +2,7 @@
 /shelf/
 /workspace.xml
 TestVids
+__pycache__
+Blueprints/Results
 ./idea/
-# Hello World
+.idea
