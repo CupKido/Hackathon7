@@ -4,21 +4,21 @@ import cv2
 import chooseColor
 import random
 
-#######################  Global variables  #######################
-scale_factor = 0.25
-focal_length = 24
-normal_box_height = 80
-normal_box_width = 1
-camera_location = (138, 149)
-pixels_per_meter = 32.5
-field_of_view = 73.7
-base_camera_angle = 145
-camera_angle = 110
-circles = []
-
+############################  CONSTS  ###########################
+SCALE_FACTOR = 0.25
+FOCAL_LENGTH = 24
+NORMAL_BOX_HEIGHT = 80
+NORMAL_BOX_WIDTH = 1
+CAMERA_LOCATION = (138, 149)
+PIXELS_PER_METER = 32.5
+FIELD_OF_VIEW = 73.7
+BASE_CAMERA_ANGLE = 145
+CAMERA_ANGLE = 110
 #################################################################
 
-
+#######################  Global variables  ######################
+circles = []
+#################################################################
 
 # Initializing the HOG detector
 hog = cv2.HOGDescriptor()
@@ -39,8 +39,8 @@ width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 # Calculate the new width and height
-new_width = int(width * scale_factor)
-new_height = int(height * scale_factor)
+new_width = int(width * SCALE_FACTOR)
+new_height = int(height * SCALE_FACTOR)
 fps = int(cap.get(cv2.CAP_PROP_FPS))
 
 # define out
@@ -57,7 +57,7 @@ copy_blueprint = blueprint.copy()
 
 # draw a circle on camera location
 
-cv2.circle(copy_blueprint, camera_location, 10, (0, 255, 0), -1)
+cv2.circle(copy_blueprint, CAMERA_LOCATION, 10, (0, 255, 0), -1)
 
 while cap.isOpened():
     # Reading the video stream
@@ -83,23 +83,23 @@ while cap.isOpened():
             # Calculate the distance to the object
             box_height = h
             box_width = w
-            distance = (normal_box_height * focal_length) / box_height
+            distance = (NORMAL_BOX_HEIGHT * FOCAL_LENGTH) / box_height
 
             # Calculate the angle to the object
             box_center = (x + (box_width / 2), y + (box_height / 2))
             angle = box_center[0] - (new_width / 2)
             angle = angle / (new_width / 2)
-            angle = angle * (field_of_view / 2)
+            angle = angle * (FIELD_OF_VIEW / 2)
 
             # Print the distance and angle to the object in the image and change degrees to radians
-            angle = math.radians(angle - (base_camera_angle - camera_angle))
+            angle = math.radians(angle - (BASE_CAMERA_ANGLE - CAMERA_ANGLE))
             object_x = distance * math.cos(angle)
             object_y = distance * math.sin(angle)
 
             # find the pixel location of the object
 
-            xLocation = camera_location[0] - (object_y * pixels_per_meter)
-            yLocation = camera_location[1] + (object_x * pixels_per_meter)
+            xLocation = CAMERA_LOCATION[0] - (object_y * PIXELS_PER_METER)
+            yLocation = CAMERA_LOCATION[1] + (object_x * PIXELS_PER_METER)
 
             # choose color by checking other circles in the area
 

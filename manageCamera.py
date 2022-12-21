@@ -11,8 +11,8 @@ def sync_params():
 
 def add_camera(capture, location, angle):
     if(capture not in cameras):
-        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
         cameras[capture] = {"frame" : (width, height) , "loc_params" : (location, angle)}
 
 
@@ -57,7 +57,7 @@ def process_frame(image, cap):
             # Calculate the distance to the object
         box_height = h
         box_width = w
-        distance = (detectPeople.normal_box_height * detectPeople.focal_length) / box_height
+        distance = (detectPeople.NORMAL_BOX_HEIGHT * detectPeople.FOCAL_LENGTH) / box_height
 
             # Calculate the angle to the object
         box_center = x + (box_width / 2)
