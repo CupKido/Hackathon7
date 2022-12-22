@@ -58,9 +58,12 @@ def camera_popup(x, y):
 
         fov = get_fov(int(focal), 1)[0]
 
+        if angle == 104:
+            angle = 119
+
         temp = BASE_CAMERA_ANGLE - int(angle)
 
-        angle = temp if temp % 90 else 90 - temp
+        angle = 90 - temp
 
         length = 60
         # draw the right edge of cam fov

@@ -63,7 +63,7 @@ def process_combined_file(path):
     for line in file.readlines():
         process_combined_line(line)
         i += 1
-        if i > 12:
+        if i > 12 and not IS_GUI:
             time.sleep(WAIT_TIME)
             i = 0
 
@@ -95,8 +95,8 @@ def process_file(path):
     for line in file.readlines():
         circle_in_lines += [process_line(line, path)]
         i += 1
-        if i > 12:
-            #time.sleep(WAIT_TIME)
+        if i > 12 and not IS_GUI:
+            time.sleep(WAIT_TIME)
             i = 0
     return circle_in_lines
 
