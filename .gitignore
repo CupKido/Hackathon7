@@ -6,3 +6,4 @@ __pycache__
 Blueprints/Results
 ./idea/
 .idea
+__pycache__/manageCamera.cpython-310.pyc
