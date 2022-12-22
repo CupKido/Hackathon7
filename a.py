@@ -24,3 +24,4 @@ sorted_lines = sorted(indexed_lines, key=lambda x: x[0])
 with open(r'C:\Users\Saar\Documents\school\courses\Hackathon7\sorted_lines.txt', 'w') as f:
     for index, text in sorted_lines:
         f.write('{}: {}\n'.format(index, text))
+

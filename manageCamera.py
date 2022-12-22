@@ -9,6 +9,7 @@ circles = []
 ids = {}
 last_file_ids = {}
 camera_base_angle = 145
+sorted_sections = []
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 REMOVED = [set()]
@@ -18,7 +19,7 @@ BASE_CAMERA_ANGLE = 145 + 15
 PIXELS_PER_METER = 35
 #PIXELS_PER_METER = 32.5
 BALL_SIZE = 3
-WAIT_TIME = 0.15
+WAIT_TIME = 0.3
 blueprint = cv2.imread('Blueprints/Test_cases/jpg/BlueprintVectors1080.jpg')
 blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
 copy_blueprint = blueprint.copy()
@@ -41,7 +42,40 @@ def process_files():
         process_file(path)
     print(str(ids))
 
-    
+def process_combined_files():
+    path = create_combined_file()
+    process_combined_file(path)
+
+def process_combined_file(path):
+    file = open(path, 'r')
+    i = 0
+    for line in file.readlines():
+        process_combined_line(line)
+        i += 1
+        if i > 12:
+            time.sleep(WAIT_TIME)
+            i = 0
+
+def create_combined_file():
+    all_lines = []
+    for path in files:
+        file = open(path, 'r')
+        for line in file:
+            if ' ' in line:
+                H, T = line.strip().split(' ', 1)
+                intH = int(H) 
+                if intH > 720:
+                    intH -= 720
+                line = str(intH) + ' ' + T
+                all_lines.append((intH, line + ' ' + path))
+    sorted_lines = sorted(all_lines, key=lambda x: x[0])
+    pathname = 'nfile.txt'
+    newfile = open(pathname,'w')
+    for index, content in sorted_lines:
+        newfile.write(content + ' \n')
+    file.close()
+    newfile.close()
+    return pathname
 
 def process_file(path): 
     file = open(path, 'r')
@@ -52,6 +86,12 @@ def process_file(path):
         if i > 12:
             time.sleep(WAIT_TIME)
             i = 0
+
+def process_combined_line(data):
+    line = data.split(' ')
+    if len(line) < 10:
+        return
+    process_line(data, line[10])
 
 def process_line(data, path):
     name = files[path]["cap_params"]
