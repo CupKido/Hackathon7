@@ -2,10 +2,12 @@ import math
 from datetime import datetime
 from FOV_calc import *
 
+FORMATS = {1: '35mm & FX', 2: 'DX', 3: 'CX Nikon 1'}
 FORMATS = {1 : '35mm & FX', 2 : 'DX', 3 : 'CX Nikon 1'}
 FPS = 24
 
 camera_list = []
+
 pinpoint_list = []
 person_list = []
 
@@ -25,6 +27,13 @@ class Camera:
         Camera.start_timestamp - The timestamp at which the footage started
         Camera.start_time - The time at which the footage started"""
 
+    id: int
+    name: str
+    location: tuple
+    direction: float
+    lens_focal_length: int
+    format: int
+    horizontal_fov: float
     id : int
     name : str
     location : tuple
@@ -35,6 +44,7 @@ class Camera:
     start_timestamp : int
     start_time : datetime
 
+    def __init__(self, location: tuple, direction: float, lens_focal_length: int, format: int, name=''):
 
     def __init__(self, location : tuple, direction : float, lens_focal_length : int, format : int, start_timestamp : int, name : str = ''):
         """
@@ -53,10 +63,13 @@ class Camera:
             raise Exception('Direction must be between 0 and 360')
         if lens_focal_length < 0:
             raise Exception('Lens Focal Length must be positive')
-        if lens_focal_length not in (10, 11, 12, 14, 15, 17, 18, 19, 20, 24, 28, 30, 35, 45, 50, 55, 60, 70, 75, 80, 85, 90, 100, 105, 120, 125, 135, 150, 170):
+        if lens_focal_length not in (
+        10, 11, 12, 14, 15, 17, 18, 19, 20, 24, 28, 30, 35, 45, 50, 55, 60, 70, 75, 80, 85, 90, 100, 105, 120, 125, 135,
+        150, 170):
             raise Exception('Lens Focal Length is not supported')
         if format not in (1, 2, 3):
             raise Exception('Format is not supported')
+
         if start_timestamp < 0:
             raise Exception('Timestamp must be positive')
         
@@ -67,6 +80,7 @@ class Camera:
         self.lens_focal_length = lens_focal_length
         self.format = format
         self.horizontal_fov = get_fov(self.lens_focal_length, self.format)[0]
+
         self.start_timestamp = start_timestamp
         self.start_time = datetime.fromtimestamp(self.start_timestamp)
     
@@ -95,6 +109,7 @@ Start Time: {self.start_time.strftime("%d/%m/%Y %H:%M:%S")}'
         yLocation = self.location[1] + (object_x * pixels_per_meter)
 
         return xLocation, yLocation
+
 
 
 class Person:
