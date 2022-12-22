@@ -40,6 +40,8 @@ def process_files():
         process_file(path)
     print(str(ids))
 
+    
+
 def process_file(path): 
     file = open(path, 'r')
     i = 0
