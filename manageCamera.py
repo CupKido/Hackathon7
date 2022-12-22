@@ -20,7 +20,10 @@ SCALE_FACTOR = 0.25
 BASE_CAMERA_ANGLE = 145 + 15
 #PIXELS_PER_METER = 40.3
 #PIXELS_PER_METER = 32.5
-PIXELS_PER_METER = 36
+if IS_GUI:
+    PIXELS_PER_METER = 36
+else:
+    PIXELS_PER_METER = 26.83
 BALL_SIZE = 3
 WAIT_TIME = 0.15
 blueprint = cv2.imread('Blueprints/Test_cases/jpg/BlueprintVectors720.jpg')
