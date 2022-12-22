@@ -1,17 +1,21 @@
 import math
 import tkinter as tk
-from manageCamera import BASE_CAMERA_ANGLE, process_frames, add_camera, PIXELS_PER_METER
+from manageCamera import *
 from PIL import Image, ImageTk
 from classes import Camera
 from FOV_calc import get_fov
 
 path_to_blueprint = "Blueprints/Templates/png/Israel_Floor_2.png"
-path_to_vid1 = "TestVids/Cam1Test2.mp4"
-path_to_vid2 = "TestVids/Cam2Test2.mp4"
+path_to_vid1 = "TestVids/Cam1Test1.mp4"
+path_to_vid2 = "TestVids/Cam2Test1.mp4"
 
 
 def _create_circle(self, x, y, r, **kwargs):
     return self.create_oval(x - r, y - r, x + r, y + r, **kwargs)
+
+
+def draw_circle(x, y, r, **kwargs):
+    canvas.create_circle(x, y, r, **kwargs)
 
 
 def camera_popup(x, y):
@@ -21,15 +25,15 @@ def camera_popup(x, y):
         angle = dir.get()
         focal = focal_length.get()
 
-        if float(angle) == 109:
-            add_camera(path_to_vid2, (x, y), angle, get_fov(int(focal), 1)[0], focal)
+        if float(angle) == 108:
+            add_camera(path_to_vid2, (x, y), int(angle), get_fov(int(focal), 1)[0], int(focal))
         else:
-            add_camera(path_to_vid1, (x, y), angle, get_fov(int(focal), 1)[0], focal)
-        root.quit()
+            add_camera(path_to_vid1, (x, y), int(angle), get_fov(int(focal), 1)[0], int(focal))
+        root.destroy()
 
         fov = get_fov(int(focal), 1)[0]
 
-        temp = BASE_CAMERA_ANGLE - int(angle)
+        temp = camera_base_angle - int(angle)
 
         angle = temp if temp % 90 else 90 - temp
 
@@ -75,11 +79,18 @@ def camera_popup(x, y):
 def add(eventorigin):
     x0 = eventorigin.x
     y0 = eventorigin.y
-    canvas.create_circle(x0, y0, 5, fill="blue", outline="", width=4)
+    canvas.create_circle(x0, y0, 5, fill="blue", width=4)
+
+    root.unbind("<Button 1>")
 
     camera_popup(x0, y0)
 
-    root.unbind("<Button 1>")
+
+def process_files_gui():
+    circles = process_files()
+    for file in circles:
+        for circle in file:
+            draw_circle(circle[0], circle[1], circle[2], fill="red")
 
 
 def add_cam():
@@ -106,7 +117,8 @@ canvas.create_image(0, 0, anchor=tk.NW, image=img)
 add_cam = tk.Button(root, text="Add Camera", command=add_cam)
 add_cam.pack()
 
-process = tk.Button(root, text="Process Data", command=process_frames)
+
+process = tk.Button(root, text="Process Data", command=process_files_gui)
 process.pack()
 
 
