@@ -45,6 +45,7 @@ class Camera:
     start_time : datetime
 
     def __init__(self, location: tuple, direction: float, lens_focal_length: int, format: int, name=''):
+        return
 
     def __init__(self, location : tuple, direction : float, lens_focal_length : int, format : int, start_timestamp : int, name : str = ''):
         """
