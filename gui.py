@@ -1,8 +1,6 @@
-import math
 import tkinter as tk
 from manageCamera import *
 from PIL import Image, ImageTk
-from classes import Camera
 from FOV_calc import get_fov
 
 path_to_blueprint = "Blueprints\\Test_cases\\jpg\\blueprintVectors720.jpg"
@@ -15,7 +13,11 @@ def _create_circle(self, x, y, r, **kwargs):
 
 
 def draw_circle(x, y, r, **kwargs):
-    canvas.create_circle(x, y, r, **kwargs)
+    canvas.create_circle(x, y, r, tag="circle", **kwargs)
+
+
+def fetch_frame(eventorigin):
+    print(eventorigin.x, eventorigin.y)
 
 
 def camera_popup(x, y):
@@ -33,7 +35,7 @@ def camera_popup(x, y):
 
         fov = get_fov(int(focal), 1)[0]
 
-        temp = camera_base_angle - int(angle)
+        temp = BASE_CAMERA_ANGLE - int(angle)
 
         angle = temp if temp % 90 else 90 - temp
 
@@ -86,7 +88,11 @@ def add(eventorigin):
     camera_popup(x0, y0)
 
 
+circles = []
+
+
 def process_files_gui():
+    global circles
     circles = process_files()
     for file in circles:
         for circle in file:
@@ -104,7 +110,7 @@ blueprint_size = (533, 633)
 root = tk.Tk()
 root.title("Main Window")
 
-canvas = tk.Canvas(root, width= 533, height=633)
+canvas = tk.Canvas(root, width=533, height=633)
 canvas.pack(anchor=tk.N, expand=True)
 
 # Load an image in the script
@@ -117,10 +123,10 @@ canvas.create_image(0, 0, anchor=tk.NW, image=img)
 add_cam = tk.Button(root, text="Add Camera", command=add_cam)
 add_cam.pack()
 
-
 process = tk.Button(root, text="Process Data", command=process_files_gui)
 process.pack()
 
+canvas.tag_bind("circle", "<ButtonPress-1>", fetch_frame)
 
 def run():
     root.mainloop()

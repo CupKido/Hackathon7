@@ -48,7 +48,7 @@ def process_files():
     circle_in_files = []
     for path in files:
         circle_in_files += [process_file(path)]
-    print(str(ids))
+    #print(str(ids))
     return circle_in_files
 
 
@@ -166,7 +166,7 @@ def process_line(data, path):
             color = (b, g, r)
         ids[temp_id] = color
 
-    print(str(temp_id) + " " + str(color) + " " + str(int(xLocation)) + " " + str(int(yLocation)))
+    #print(str(temp_id) + " " + str(color) + " " + str(int(xLocation)) + " " + str(int(yLocation)))
     if not IS_GUI:
         cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)
         cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
