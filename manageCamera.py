@@ -49,7 +49,8 @@ def process_files():
     for path in files:
         circle_in_files += [process_file(path)]
     #print(str(ids))
-    return circle_in_files
+    return flatten_list(circle_in_files)
+
 
 
 def process_combined_files():
@@ -99,6 +100,17 @@ def process_file(path):
             i = 0
     return circle_in_lines
 
+def flatten_list(_2d_list):
+    flat_list = []
+    # Iterate through the outer list
+    for element in _2d_list:
+        if type(element) is list:
+            # If the element is of type list, iterate through the sublist
+            for item in element:
+                flat_list.append(item)
+        else:
+            flat_list.append(element)
+    return flat_list
 
 def process_combined_line(data):
     line = data.split(' ')
@@ -170,7 +182,7 @@ def process_line(data, path):
     if not IS_GUI:
         cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)
         cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
-    return int(xLocation), int(yLocation), BALL_SIZE, color
+    return int(xLocation), int(yLocation), BALL_SIZE, color, line[0], path
 
 
 def add_camera(capture_path, location, angle, fov, focal_length):
