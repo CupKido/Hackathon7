@@ -2,7 +2,7 @@ import cv2
 
 #open the blueprint image
 
-blueprint = cv2.imread('Blueprints\\Test_cases\\jpg\\BlueprintVectors1080.jpg')
+blueprint = cv2.imread('Blueprints\\Test_cases\\jpg\\BlueprintVectors720.jpg')
 
 #resize the blueprint image
 
