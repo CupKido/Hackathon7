@@ -161,8 +161,8 @@ def process_line(data, path):
         ids[temp_id] = color
 
     print(str(temp_id) + " " + str(color) + " " + str(int(xLocation)) + " " + str(int(yLocation)))
-    # cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)
-    # cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
+    cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)
+    cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
     return int(xLocation), int(yLocation), BALL_SIZE, color
 
 
