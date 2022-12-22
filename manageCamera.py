@@ -8,12 +8,15 @@ cameras = {}
 files = {}
 circles = []
 ids = {}
+ids[9] = "red"
+ids[10] = "blue"
+ids[8] = "green"
 last_id_location = {}
 camera_base_angle = 145
 sorted_sections = []
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-IS_GUI = False
+IS_GUI = True
 REMOVED = [set()]
 NORMAL_BOX_HEIGHT = 178
 SCALE_FACTOR = 0.25
