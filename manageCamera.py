@@ -15,10 +15,11 @@ REMOVED = [set()]
 NORMAL_BOX_HEIGHT = 178
 SCALE_FACTOR = 0.25
 BASE_CAMERA_ANGLE = 145 + 15
-PIXELS_PER_METER = 32.5
+PIXELS_PER_METER = 35
+#PIXELS_PER_METER = 32.5
 BALL_SIZE = 3
 WAIT_TIME = 0.15
-blueprint = cv2.imread('Blueprints/Test_cases/png/blueprintsT1.png')
+blueprint = cv2.imread('Blueprints/Test_cases/jpg/BlueprintVectors1080.jpg')
 blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
 copy_blueprint = blueprint.copy()
 delete_previous = True
