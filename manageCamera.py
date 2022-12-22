@@ -13,7 +13,7 @@ camera_base_angle = 145
 sorted_sections = []
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
-IS_GUI = True
+IS_GUI = False
 REMOVED = [set()]
 NORMAL_BOX_HEIGHT = 178
 SCALE_FACTOR = 0.25
