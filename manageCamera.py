@@ -13,20 +13,21 @@ camera_base_angle = 145
 sorted_sections = []
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+IS_GUI = True
 REMOVED = [set()]
 NORMAL_BOX_HEIGHT = 178
 SCALE_FACTOR = 0.25
 BASE_CAMERA_ANGLE = 145 + 15
 #PIXELS_PER_METER = 40.3
 #PIXELS_PER_METER = 32.5
-PIXELS_PER_METER = 38.41
+PIXELS_PER_METER = 36
 BALL_SIZE = 3
 WAIT_TIME = 0.15
 blueprint = cv2.imread('Blueprints/Test_cases/jpg/BlueprintVectors720.jpg')
 blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
 copy_blueprint = blueprint.copy()
 delete_previous = True
-
+SCENE_PARAMS = []
 
 def sync_params(normal_box_height, scale_factor):
     NORMAL_BOX_HEIGHT = normal_box_height
@@ -152,6 +153,10 @@ def process_line(data, path):
     # 2 and 10 - saar
     if temp_id in ids.keys():
         color = ids[temp_id]
+    elif IS_GUI:
+        colors = ["red", "blue", "green", "yellow", "black", "brown", "cyan", "orange"]
+        color = colors[random.randint(0, len(colors) - 1)]
+        ids[temp_id] = color
     else:
         color = chooseColor.checkForCircles(xLocation, yLocation, circles)
         if color is False:
@@ -162,8 +167,9 @@ def process_line(data, path):
         ids[temp_id] = color
 
     print(str(temp_id) + " " + str(color) + " " + str(int(xLocation)) + " " + str(int(yLocation)))
-    cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)
-    cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
+    if not IS_GUI:
+        cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)
+        cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
     return int(xLocation), int(yLocation), BALL_SIZE, color
 
 

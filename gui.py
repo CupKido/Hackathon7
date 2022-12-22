@@ -90,7 +90,7 @@ def process_files_gui():
     circles = process_files()
     for file in circles:
         for circle in file:
-            draw_circle(circle[0], circle[1], circle[2], fill="red")
+            draw_circle(circle[0], circle[1], circle[2], fill=circle[3])
 
 
 def add_cam():
