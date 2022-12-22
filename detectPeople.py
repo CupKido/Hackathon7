@@ -55,12 +55,14 @@ fourcc = cv2.VideoWriter_fourcc(*'XVID')
 
 #cv2.circle(copy_blueprint, CAMERA_LOCATION, 10, (0, 255, 0), -1)
 
+test1 = cv2.VideoCapture('Videos/TestVids/Cam1Test1.MP4')
+print(test1.get(cv2.CAP_PROP_FRAME_COUNT))
 manageCamera.sync_params(NORMAL_BOX_HEIGHT, SCALE_FACTOR)
 manageCamera.add_text_data('cam2test1.txt', 'Videos/TestVids/Cam2Test1.MP4', (107, 144), CAMERA_ANGLE, FIELD_OF_VIEW, 24)
 #manageCamera.add_camera('Videos/TestVids/1Zigzag.MP4', (107, 144), 145, 73.7, 24)
 #manageCamera.add_camera('Videos/TestVids/Cam2Test1.MP4', (107, 144), 108, 73.7, 24)
 #manageCamera.add_camera('Videos/TestVids/Cam1Test1.MP4', (211, 548), 325, 70.7, 27)
-manageCamera.process_files()
+manageCamera.process_combined_files()
 #manageCamera.process_cameras()
 
 cv2.destroyAllWindows()

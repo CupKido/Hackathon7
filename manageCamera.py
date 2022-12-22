@@ -7,16 +7,20 @@ cameras = {}
 files = {}
 circles = []
 ids = {}
+last_file_ids = {}
 camera_base_angle = 145
+sorted_sections = []
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 REMOVED = [set()]
-NORMAL_BOX_HEIGHT = 195
+NORMAL_BOX_HEIGHT = 178
 SCALE_FACTOR = 0.25
 BASE_CAMERA_ANGLE = 145 + 15
-PIXELS_PER_METER = 32.5
+PIXELS_PER_METER = 40.3
+#PIXELS_PER_METER = 32.5
 BALL_SIZE = 3
-blueprint = cv2.imread('Blueprints/Test_cases/png/blueprintsT1.png')
+WAIT_TIME = 0.15
+blueprint = cv2.imread('Blueprints/Test_cases/jpg/BlueprintVectors1080.jpg')
 blueprint = cv2.resize(blueprint, (0, 0), fx=0.7, fy=0.7)
 copy_blueprint = blueprint.copy()
 delete_previous = True
@@ -36,6 +40,42 @@ def add_text_data(path, capture_path, location, angle, fov, focal_length):
 def process_files():
     for path in files:
         process_file(path)
+    print(str(ids))
+
+def process_combined_files():
+    path = create_combined_file()
+    process_combined_file(path)
+
+def process_combined_file(path):
+    file = open(path, 'r')
+    i = 0
+    for line in file.readlines():
+        process_combined_line(line)
+        i += 1
+        if i > 12:
+            time.sleep(WAIT_TIME)
+            i = 0
+
+def create_combined_file():
+    all_lines = []
+    for path in files:
+        file = open(path, 'r')
+        for line in file:
+            if ' ' in line:
+                H, T = line.strip().split(' ', 1)
+                intH = int(H) 
+                if intH > 720:
+                    intH -= 720
+                line = str(intH) + ' ' + T
+                all_lines.append((intH, line + ' ' + path))
+    sorted_lines = sorted(all_lines, key=lambda x: x[0])
+    pathname = 'nfile.txt'
+    newfile = open(pathname,'w')
+    for index, content in sorted_lines:
+        newfile.write(content + ' \n')
+    file.close()
+    newfile.close()
+    return pathname
 
 def process_file(path): 
     file = open(path, 'r')
@@ -44,8 +84,14 @@ def process_file(path):
         process_line(line, path)
         i += 1
         if i > 12:
-            time.sleep(0.2)
+            time.sleep(WAIT_TIME)
             i = 0
+
+def process_combined_line(data):
+    line = data.split(' ')
+    if len(line) < 10:
+        return
+    process_line(data, line[10])
 
 def process_line(data, path):
     name = files[path]["cap_params"]
@@ -56,6 +102,8 @@ def process_line(data, path):
     width = int(files[path]["frame"][0])
     height = int(files[path]["frame"][1])
     line = data.split(' ')
+    if len(line) < 6:
+        return
     box_height = float(line[5])
     box_width = float(line[4])
     y = float(line[3])
@@ -76,6 +124,16 @@ def process_line(data, path):
     xLocation = camera_location[0] - (object_y * PIXELS_PER_METER)
     yLocation = camera_location[1] + (object_x * PIXELS_PER_METER)
     temp_id = int(line[1])
+    
+    if temp_id == 1 or temp_id == 9:
+        temp_id = 9
+    if temp_id == 3 or temp_id == 8 or temp_id == 7:
+        temp_id = 8
+    if temp_id == 2 or temp_id == 10:
+        temp_id = 10
+    # 3 and 8 and 7 - ben
+    # 1 and 9 - itamar
+    # 2 and 10 - saar
     if temp_id in ids.keys():
         color = ids[temp_id]
     else:
@@ -87,7 +145,7 @@ def process_line(data, path):
             color = (b, g, r)
         ids[temp_id] = color
 
-    
+    print(str(temp_id) + " " + str(color) + " " + str(int(xLocation)) + " " + str(int(yLocation)))
     cv2.circle(copy_blueprint, (int(xLocation), int(yLocation)), BALL_SIZE, color, -1)  
     cv2.imwrite('Blueprints\\Results\\blueprintLocations1.png', copy_blueprint)
 
