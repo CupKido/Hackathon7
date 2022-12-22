@@ -56,7 +56,7 @@ fourcc = cv2.VideoWriter_fourcc(*'XVID')
 #cv2.circle(copy_blueprint, CAMERA_LOCATION, 10, (0, 255, 0), -1)
 
 manageCamera.sync_params(NORMAL_BOX_HEIGHT, SCALE_FACTOR)
-manageCamera.add_text_data('Test113.txt', 'Videos/TestVids/Cam1Test1.MP4', (211, 548), 340, 70.7, 27)
+manageCamera.add_text_data('Test11.txt', 'Videos/TestVids/Cam1Test1.MP4', (211, 548), 340, 70.7, 27)
 manageCamera.add_text_data('Test12.txt', 'Videos/TestVids/Cam2Test1.MP4', (107, 144), 104, 73.7, 24)
 #manageCamera.add_camera('Videos/TestVids/1Zigzag.MP4', (107, 144), 145, 73.7, 24)
 #manageCamera.add_camera('Videos/TestVids/Cam2Test1.MP4', (107, 144), 108, 73.7, 24)
