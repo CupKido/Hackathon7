@@ -19,7 +19,7 @@ SCALE_FACTOR = 0.25
 BASE_CAMERA_ANGLE = 145 + 15
 #PIXELS_PER_METER = 40.3
 #PIXELS_PER_METER = 32.5
-PIXELS_PER_METER = 26.83
+PIXELS_PER_METER = 38.41
 BALL_SIZE = 3
 WAIT_TIME = 0.15
 blueprint = cv2.imread('Blueprints/Test_cases/jpg/BlueprintVectors720.jpg')
@@ -94,7 +94,7 @@ def process_file(path):
         circle_in_lines += [process_line(line, path)]
         i += 1
         if i > 12:
-            time.sleep(WAIT_TIME)
+            #time.sleep(WAIT_TIME)
             i = 0
     return circle_in_lines
 

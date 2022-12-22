@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 from classes import Camera
 from FOV_calc import get_fov
 
-path_to_blueprint = "Blueprints/Templates/png/Israel_Floor_2.png"
+path_to_blueprint = "Blueprints\\Test_cases\\jpg\\blueprintVectors720.jpg"
 path_to_vid1 = "TestVids/Cam1Test1.mp4"
 path_to_vid2 = "TestVids/Cam2Test1.mp4"
 
@@ -25,7 +25,7 @@ def camera_popup(x, y):
         angle = dir.get()
         focal = focal_length.get()
 
-        if float(angle) == 108:
+        if float(angle) == 104:
             add_camera(path_to_vid2, (x, y), int(angle), get_fov(int(focal), 1)[0], int(focal))
         else:
             add_camera(path_to_vid1, (x, y), int(angle), get_fov(int(focal), 1)[0], int(focal))
@@ -99,12 +99,12 @@ def add_cam():
 
 tk.Canvas.create_circle = _create_circle
 
-blueprint_size = (588, 712)
+blueprint_size = (533, 633)
 
 root = tk.Tk()
 root.title("Main Window")
 
-canvas = tk.Canvas(root, width=600, height=650)
+canvas = tk.Canvas(root, width= 533, height=633)
 canvas.pack(anchor=tk.N, expand=True)
 
 # Load an image in the script
