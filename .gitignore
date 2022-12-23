@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 TestVids
-__pycache__
+/__pycache__/
 Blueprints/Results
 ./idea/
 .idea
