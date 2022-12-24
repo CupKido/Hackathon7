@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from manageCamera import *
 from PIL import Image, ImageTk
@@ -7,14 +8,45 @@ import cv2
 path_to_blueprint = "Blueprints\\Test_cases\\jpg\\blueprintVectors720.jpg"
 path_to_vid1 = "TestVids/Cam1Test1.mp4"
 path_to_vid2 = "TestVids/Cam2Test1.mp4"
+circles = []
+blueprint_size = (533, 633)
+cameras_data_file = "appdata/cameras.txt"
+fov_length = 80
 
 
 def _create_circle(self, x, y, r, **kwargs):
     return self.create_oval(x - r, y - r, x + r, y + r, **kwargs)
 
 
+# creating new function in canvas
+tk.Canvas.create_circle = _create_circle
+
+
 def draw_circle(x, y, r, **kwargs):
     canvas.create_circle(x, y, r, tag="circle", **kwargs)
+
+
+def draw_camera(x, y, r, **kwargs):
+    canvas.create_circle(x, y, 5, **kwargs)
+
+
+def draw_camera_fov(x, y, angle):
+    object_x = fov_length * math.cos(angle)
+    object_y = fov_length * math.sin(angle)
+
+    xLocation = x + object_x
+    yLocation = y + object_y
+
+    canvas.create_line(x, y, xLocation, yLocation)
+
+
+def calibrate_angle(angle):
+    if angle == 104:
+        angle = 119
+
+    temp = BASE_CAMERA_ANGLE - int(angle)
+
+    return 90 - temp
 
 
 def fetch_frame(eventorigin):
@@ -47,46 +79,35 @@ def camera_popup(x, y):
     root = tk.Tk()
 
     def register_camera():
+        file = open(cameras_data_file, 'a')
         angle = dir.get()
         focal = focal_length.get()
+        root.destroy()
+        with open(cameras_data_file, 'r+') as f:
+            for line in f:
+                if f"{x} {y} {angle} {get_fov(int(focal), 1)[0]} {focal}" in line:
+                    print("already exist")
+                    return
 
         if float(angle) == 104:
+            file.write(f"{path_to_vid2} {x} {y} {angle} {get_fov(int(focal), 1)[0]} {focal}\n")
             add_camera(path_to_vid2, (x, y), int(angle), get_fov(int(focal), 1)[0], int(focal))
         else:
+            file.write(f"{path_to_vid1} {x} {y} {angle} {get_fov(int(focal), 1)[0]} {focal}\n")
             add_camera(path_to_vid1, (x, y), int(angle), get_fov(int(focal), 1)[0], int(focal))
-        root.destroy()
 
         fov = get_fov(int(focal), 1)[0]
 
-        if angle == 104:
-            angle = 119
-
-        temp = BASE_CAMERA_ANGLE - int(angle)
-
-        angle = 90 - temp
+        angle = calibrate_angle(angle)
 
         length = 60
         # draw the right edge of cam fov
         right_angle = math.radians(angle - fov / 2)
-
-        object_x = length * math.cos(right_angle)
-        object_y = length * math.sin(right_angle)
-
-        xLocation = x + object_x
-        yLocation = y + object_y
-
-        canvas.create_line(x, y, xLocation, yLocation)
+        draw_camera_fov(x, y, right_angle)
 
         # draw the left edge of cam fov
         left_angle = math.radians(angle + fov / 2)
-
-        object_x = length * math.cos(left_angle)
-        object_y = length * math.sin(left_angle)
-
-        xLocation = x + object_x
-        yLocation = y + object_y
-
-        canvas.create_line(x, y, xLocation, yLocation)
+        draw_camera_fov(x, y, left_angle)
 
     root.title("Add Camera")
 
@@ -107,14 +128,19 @@ def camera_popup(x, y):
 def add(eventorigin):
     x0 = eventorigin.x
     y0 = eventorigin.y
-    canvas.create_circle(x0, y0, 5, fill="blue", width=4)
+    draw_camera(x0, y0, 5, fill="blue")
 
     root.unbind("<Button 1>")
 
     camera_popup(x0, y0)
 
 
-circles = []
+def add_cam():
+    root.bind("<Button 1>", add)
+
+
+def file_exists(fpath):
+    return os.path.isfile(fpath) and os.path.getsize(fpath) > 0
 
 
 def distance2D(loc1, loc2):
@@ -142,15 +168,6 @@ def process_files_gui():
         draw_circle(circle[0], circle[1], circle[2], fill=circle[3])
 
 
-
-def add_cam():
-    root.bind("<Button 1>", add)
-
-
-tk.Canvas.create_circle = _create_circle
-
-blueprint_size = (533, 633)
-
 root = tk.Tk()
 root.title("Main Window")
 
@@ -172,9 +189,23 @@ process.pack()
 
 canvas.tag_bind("circle", "<ButtonPress-1>", fetch_frame)
 
+if file_exists(cameras_data_file):
+    with open(cameras_data_file, 'r') as f:
+        for line in f:
+            vid_path = line.split()[0]
+            x, y, angle, fov, focal = [float(x) for x in line.split() if "mp4" not in x]
 
-def run():
-    root.mainloop()
+            draw_camera(x, y, 5, fill="blue")
 
+            angle = calibrate_angle(angle)
 
-run()
+            # draw the right edge of cam fov
+            right_angle = math.radians(angle - fov / 2)
+            draw_camera_fov(x, y, right_angle)
+
+            # draw the left edge of cam fov
+            left_angle = math.radians(angle + fov / 2)
+            draw_camera_fov(x, y, left_angle)
+            print(line)
+
+root.mainloop()
